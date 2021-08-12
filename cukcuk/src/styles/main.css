@@ -1,0 +1,61 @@
+@font-face {
+    font-family: 'GoogleSans-Regular';
+    src: url('../assets/font/GoogleSans-Regular.otf');
+}
+@font-face {
+    font-family: 'GoogleSans-Bold';
+    src: url('../assets/font/GoogleSans-Bold.otf');
+}
+@font-face {
+    font-family: 'GoogleSans-Medium';
+    src: url('../assets/font/GoogleSans-Medium.otf');
+}
+@font-face {
+    font-family: 'GoogleSans-Thin';
+    src: url('../assets/font/GoogleSans-Thin.otf');
+}
+@font-face {
+    font-family: 'GoogleSans-Italic';
+    src: url('../assets/font/GoogleSans-Italic.otf');
+}
+
+@font-face {
+    font-family: 'GoogleSans-Light';
+    src: url('../assets/font/GoogleSans-Light.otf');
+}
+
+@import "grid.css";
+
+body{
+    font-size: 13px;
+    font-family: 'GoogleSans-Regular';
+    padding: 0;
+    margin: 0;
+    height: 100vh;
+    width: 100%;
+}
+
+ 
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+  }
+   
+  ::-webkit-scrollbar-thumb {
+    background: #888; 
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+  }
+
+  ::-webkit-scrollbar {
+    height: 4px;              
+    width: 4px;               
+    border: 1px solid #888;
+  }
+
+  ::-webkit-scrollbar:horizontal{
+    height: 4px;              
+    width: 4px;               
+    border: 1px solid #888;
+  }
