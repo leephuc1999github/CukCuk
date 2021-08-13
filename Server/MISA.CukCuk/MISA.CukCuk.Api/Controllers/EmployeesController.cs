@@ -19,19 +19,12 @@ namespace MISA.CukCuk.Api.Controllers
     {
         #region Declare
         private readonly IEmployeeService _employeeService;
-        private readonly string _connectString = "" +
-                "Host = 47.241.69.179;" +
-                "Database = MF948_LKPHUC_CukCuk;" +
-                "User Id = dev;" +
-                "Password = 12345678";
-        private readonly MySqlConnection _dbConnection;
         #endregion
 
         #region Constructor
         public EmployeesController(IEmployeeService employeeService)
         {
             this._employeeService = employeeService;
-            _dbConnection = new MySqlConnection(_connectString);
         }
         #endregion
 
@@ -49,14 +42,7 @@ namespace MISA.CukCuk.Api.Controllers
         [Route("paging")]
         public IActionResult GetPaging(string keyword, int pageIndex, int pageSize, string positionId, string departmentId)
         {
-            DynamicParameters parameter = new DynamicParameters();
-            parameter.Add("@Keyword", keyword);
-            parameter.Add("@PageIndex", pageIndex);
-            parameter.Add("@PageSize", pageSize);
-            parameter.Add("@PositionId", positionId);
-            parameter.Add("@DepartmentId", departmentId);
-
-            var employees = _dbConnection.Query<Employee>("Proc_GetEmployeesPaging", param: parameter, commandType: CommandType.StoredProcedure);
+            var employees = _employeeService.GetEmployeesPaging(keyword, positionId, departmentId, pageIndex, pageSize);
             return Ok(employees);
         }
 

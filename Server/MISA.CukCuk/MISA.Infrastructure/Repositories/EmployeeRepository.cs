@@ -22,6 +22,28 @@ namespace MISA.Infrastructure.Repositories
         }
 
         /// <summary>
+        /// Phân trang nhân viên
+        /// </summary>
+        /// <param name="keyword"></param>
+        /// <param name="posistionId"></param>
+        /// <param name="departmentId"></param>
+        /// <param name="pageIndex"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
+        public IEnumerable<Employee> GetEmployeesPaging(string keyword, string posistionId, string departmentId, int pageIndex, int pageSize)
+        {
+            string sqlCommand = "Proc_GetEmployeesPaging";
+            DynamicParameters parameters = new DynamicParameters();
+            parameters.Add("@Keyword", keyword);
+            parameters.Add("@PositionId", posistionId);
+            parameters.Add("@DepartmentId", departmentId);
+            parameters.Add("@PageIndex", pageIndex);
+            parameters.Add("@PageSize", pageSize);
+            var employees = _dbConnection.Query<Employee>(sqlCommand, param: parameters, commandType: CommandType.StoredProcedure);
+            return employees;
+        }
+
+        /// <summary>
         /// Lấy mã nhân viên mới
         /// </summary>
         /// <returns></returns>

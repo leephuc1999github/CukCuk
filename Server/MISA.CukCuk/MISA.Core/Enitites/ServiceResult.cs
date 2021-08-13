@@ -84,6 +84,12 @@ namespace MISA.Core.Enitites
             serviceResult.ResultCode = (int)EnumServiceResult.InternalServerError;
             serviceResult.UserMessage = Properties.Resource.User_Error_Msg;
         }
+
+        public void SetBadRequest(ServiceResult serviceResult)
+        {
+            serviceResult.ResultCode = (int)EnumServiceResult.BadRequest;
+            serviceResult.UserMessage = Properties.Resource.User_Info_Msg;
+        }
         #endregion
     }
 }

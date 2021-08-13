@@ -44,7 +44,8 @@ namespace MISA.Core.Services
                 }
                 else
                 {
-                    serviceResult.SetNoContent(serviceResult);
+                    serviceResult.SetBadRequest(serviceResult);
+                    serviceResult.DevMessage.Add($"{id.ToString()} xóa không thành công");
                 }
             }
             catch (Exception ex)
@@ -106,7 +107,8 @@ namespace MISA.Core.Services
                 }
                 else
                 {
-                    serviceResult.SetNoContent(serviceResult);
+                    serviceResult.SetBadRequest(serviceResult);
+                    serviceResult.DevMessage.Add($"Lấy mã {id.ToString()} không thành công");
                 }
             }
             catch (Exception ex)
@@ -203,14 +205,14 @@ namespace MISA.Core.Services
                     var value = property.GetValue(entity) == "" ? null : property.GetValue(entity);
                     if (property.IsDefined(typeof(Required), false) && IsNull(value))
                     {
-                        serviceResult.ResultCode = (int)EnumServiceResult.Forbidden;
+                        serviceResult.ResultCode = (int)EnumServiceResult.BadRequest;
                         serviceResult.DevMessage.Add($"Giá trị {name} không được để trống");
                         serviceResult.UserMessage = $"Giá trị {name} không được để trống";
                     }
 
                     if(property.IsDefined(typeof(Duplication), false) && IsDuplication(name, (string)value))
                     {
-                        serviceResult.ResultCode = (int)EnumServiceResult.Forbidden;
+                        serviceResult.ResultCode = (int)EnumServiceResult.BadRequest;
                         serviceResult.DevMessage.Add($"Giá trị {name} đã tồn tại");
                         serviceResult.UserMessage = $"Giá trị {name} đã tồn tại";
                     }
@@ -219,7 +221,7 @@ namespace MISA.Core.Services
                     {
                         if (IsNotEmail(value.ToString().Trim()))
                         {
-                            serviceResult.ResultCode = (int)EnumServiceResult.Forbidden;
+                            serviceResult.ResultCode = (int)EnumServiceResult.BadRequest;
                             serviceResult.DevMessage.Add($"Giá trị {name} không đúng định dạng");
                             serviceResult.UserMessage = $"Giá trị {name} không đúng định dạng";
                         }

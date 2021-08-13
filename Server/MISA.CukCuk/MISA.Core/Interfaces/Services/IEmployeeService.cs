@@ -26,5 +26,16 @@ namespace MISA.Core.Interfaces.Services
         /// <param name="value"></param>
         /// <returns></returns>
         public ServiceResult GetEmployeeByProperty(string name, string value);
+
+        /// <summary>
+        /// Phân trang nhân viên
+        /// </summary>
+        /// <param name="keyword"></param>
+        /// <param name="posistionId"></param>
+        /// <param name="departmentId"></param>
+        /// <param name="pageIndex"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
+        public ServiceResult GetEmployeesPaging(string keyword, string posistionId, string departmentId, int pageIndex, int pageSize);
     }
 }

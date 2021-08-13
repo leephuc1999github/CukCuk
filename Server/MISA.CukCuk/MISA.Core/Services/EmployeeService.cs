@@ -86,6 +86,39 @@ namespace MISA.Core.Services
             }
             return serviceResult;
         }
+
+        /// <summary>
+        /// Phân trang nhân viên
+        /// </summary>
+        /// <param name="keyword"></param>
+        /// <param name="posistionId"></param>
+        /// <param name="departmentId"></param>
+        /// <param name="pageIndex"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
+        public ServiceResult GetEmployeesPaging(string keyword, string posistionId, string departmentId, int pageIndex, int pageSize)
+        {
+            ServiceResult serviceResult = new ServiceResult();
+            serviceResult.MoreInfo = Properties.Resource.GET;
+            try
+            {
+                var employees = _employeeRepository.GetEmployeesPaging(keyword, posistionId, departmentId, pageIndex, pageSize);
+                if(employees.Count() > 0)
+                {
+                    serviceResult.SetSuccess(serviceResult, employees);
+                }
+                else
+                {
+                    serviceResult.SetNoContent(serviceResult);
+                }
+            }
+            catch (Exception ex)
+            {
+                serviceResult.DevMessage.Add($"Exception {ex.Message}");
+                serviceResult.SetInternalServerError(serviceResult);
+            }
+            return serviceResult;
+        }
         #endregion
     }
 }
