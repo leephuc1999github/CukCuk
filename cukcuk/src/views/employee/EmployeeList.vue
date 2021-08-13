@@ -42,6 +42,7 @@
       <table id="datatable">
         <thead>
           <tr>
+            <td>#</td>
             <th>Mã nhân viên</th>
             <th>Họ và tên</th>
             <th>Giới tính</th>
@@ -56,7 +57,8 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="employee in employees" :key="employee.EmployeeId">
+          <tr v-for="(employee, index) in employees" :key="employee.EmployeeId">
+            <td>{{ index + 1 }}</td>
             <td>{{ employee.EmployeeCode }}</td>
             <td>{{ employee.FullName }}</td>
             <td>{{ employee.Gender | formatGender }}</td>
@@ -86,12 +88,15 @@
             </td>
           </tr>
           <tr v-if="employees.length == 0 ? true : false">
-            <td colspan="11" style="text-align: center">
+            <td colspan="12" style="text-align: center">
               Hiện không có dữ liệu nào !
             </td>
           </tr>
         </tbody>
       </table>
+    </div>
+    <div class="content-footer">
+      <Pagination v-bind:active="pageIndex" v-bind:size="pageSize"></Pagination>
     </div>
     <EmployeeDetail></EmployeeDetail>
     <Toast
@@ -117,6 +122,7 @@ import Common from "../../Common";
 import axios from "axios";
 import Toast from "../../components/base/BaseToast.vue";
 import Popup from "../../components/base/BasePopup.vue";
+import Pagination from "../../components/base/BasePagination.vue";
 export default {
   name: "Employee",
   components: {
@@ -125,6 +131,7 @@ export default {
     SearchBox,
     Dropdown,
     EmployeeDetail,
+    Pagination,
   },
   data() {
     return {
@@ -177,20 +184,30 @@ export default {
       keyword: "",
       positionId: "",
       departmentId: "",
-      pageIndex: 0,
-      pageSize: 100,
-
-      
+      pageIndex: 1,
+      pageSize: 12,
     };
   },
   created() {
     // get all employees
-    this.getAllEmployees();
+    this.filterEmployees(
+      this.pageIndex,
+      this.pageSize,
+      this.keyword,
+      this.departmentId,
+      this.positionId
+    );
 
     // catch event searh box
     EventBus.$on("keyChange", (keyword) => {
       this.keyword = keyword;
-      this.refreshTable();
+      this.filterEmployees(
+        this.pageIndex,
+        this.pageSize,
+        this.keyword,
+        this.departmentId,
+        this.positionId
+      );
     });
 
     // catch event dropdown changed
@@ -203,14 +220,27 @@ export default {
           this.departmentId = selected.Value;
           break;
       }
-      if (selected.Type === "filter") this.refreshTable();
+      if (selected.Type === "filter")
+        this.filterEmployees(
+          this.pageIndex,
+          this.pageSize,
+          this.keyword,
+          this.departmentId,
+          this.positionId
+        );
     });
 
     // catch event result in form
     EventBus.$on("resultForm", (result) => {
       this.logging(result);
       // EventBus.$emit("openToast", true);
-      this.getAllEmployees();
+      this.filterEmployees(
+        this.pageIndex,
+        this.pageSize,
+        this.keyword,
+        this.departmentId,
+        this.positionId
+      );
     });
 
     // catch event confirmed delete
@@ -218,6 +248,17 @@ export default {
       if (value) {
         this.deleteEmployee();
       }
+    });
+
+    EventBus.$on("pagination", (page) => {
+      this.pageIndex = page;
+      this.filterEmployees(
+        this.pageIndex,
+        this.pageSize,
+        this.keyword,
+        this.departmentId,
+        this.positionId
+      );
     });
   },
   mounted() {},
@@ -243,7 +284,7 @@ export default {
         default:
           return "";
       }
-    }
+    },
   },
   methods: {
     /**
@@ -253,7 +294,7 @@ export default {
     async deleteEmployee() {
       try {
         let response = await axios.delete(
-          `https://localhost:44379/api/v1/employee/${this.employeeId}`
+          Common.APIURL + `employees/${this.employeeId}`
         );
         EventBus.$emit("resultForm", response);
       } catch (error) {
@@ -309,28 +350,6 @@ export default {
     },
 
     /**
-     * Refresh table
-     * Author : LP(7/8)
-     */
-    refreshTable() {
-      if (
-        !Common.isNullOrUndifined(this.keyword) ||
-        !Common.isNullOrUndifined(this.positionId) ||
-        !Common.isNullOrUndifined(this.departmentId)
-      ) {
-        this.filterEmployees(
-          this.pageIndex,
-          this.pageSize,
-          this.keyword,
-          this.positionId,
-          this.departmentId
-        );
-      } else {
-        this.getAllEmployees();
-      }
-    },
-
-    /**
      * Filter data by keyword, departmentId, positionId api
      * Author : LP(7/8)
      */
@@ -341,30 +360,16 @@ export default {
       departmentId,
       positionId
     ) {
-      console.log("filterEmployees");
-      // console.log(keyword);
-      // console.log(departmentId);
-      // console.log(positionId);
       try {
         let result = await axios.get(
-          `https://localhost:44379/api/v1/employee/paging?keyword=${keyword}&positionId=${positionId}&departmentId=${departmentId}&pageIndex=${pageIndex * pageSize}&pageSize=${pageSize}`
+          Common.APIURL +
+            `employees/paging?keyword=${keyword}&positionId=${positionId}&departmentId=${departmentId}&pageIndex=${
+              (pageIndex-1) * pageSize
+            }&pageSize=${pageSize}`
         );
         this.employees = result.data;
       } catch (error) {
         console.log("filterEmployees\n" + error);
-      }
-    },
-
-    /**
-     * Get all employee api
-     * Author : LP(7/8)
-     */
-    async getAllEmployees() {
-      try {
-        let result = await axios.get("https://localhost:44379/api/v1/employee");
-        this.employees = result.data.Data;
-      } catch (error) {
-        console.log("getAllEmployees\n" + error);
       }
     },
   },

@@ -138,6 +138,7 @@ export default {
   
   .popup-content-site {
     padding: 24px;
+    padding-top: 0;
     display: block;
     line-height: 38px;
   }

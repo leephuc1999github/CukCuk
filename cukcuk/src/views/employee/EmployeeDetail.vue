@@ -604,7 +604,7 @@ export default {
     async duplicated(name, value) {
       try {
         let response = await axios.get(
-          `https://localhost:44379/api/v1/employee/Check?name=${name}&value=${value}`
+          Common.APIURL + `employees/Property?name=${name}&value=${value}`
         );
         return response;
       } catch (error) {
@@ -640,7 +640,7 @@ export default {
     async editEmpoyee() {
       try {
         let response = await axios.put(
-          `https://localhost:44379/api/v1/employee/${this.id}`,
+          Common.APIURL + `employees/${this.id}`,
           this.employee
         );
         EventBus.$emit("resultForm", response);
@@ -656,7 +656,7 @@ export default {
     async addEmployee() {
       try {
         let response = await axios.post(
-          "https://localhost:44379/api/v1/employee",
+          Common.APIURL + "employees",
           this.employee
         );
         EventBus.$emit("resultForm", response);
@@ -672,7 +672,7 @@ export default {
     async getNewEmployeeCode() {
       try {
         let response = await axios.get(
-          "https://localhost:44379/api/v1/employee/NewEmployeeCode"
+          Common.APIURL + "employees/NewEmployeeCode"
         );
         this.employee = {
           EmployeeCode: "",
@@ -693,7 +693,7 @@ export default {
     async getEmployee() {
       try {
         let response = await axios.get(
-          `https://localhost:44379/api/v1/employee/${this.id}`
+          Common.APIURL + `employees/${this.id}`
         );
         this.employee = {};
         this.employee = response.data.Data;

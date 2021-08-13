@@ -1,6 +1,6 @@
 import moment from 'moment'
 class Common {
-
+    static APIURL = "https://localhost:44379/api/v1/";
     /**-------------------------------------------
     * Format salary to money VND
     * Author : LP(30/7)

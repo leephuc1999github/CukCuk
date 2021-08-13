@@ -95,7 +95,7 @@ export default {
      */
     async countRecord() {
       try {
-        let result = await axios.get(Common.URLAPI);
+        let result = await axios.get(Common.APIURL+"employees");
         if (Common.isNullOrUndifined(result.data.Data)) {
           this.total = 0;
         } else {
