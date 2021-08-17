@@ -234,6 +234,11 @@ export default {
     EventBus.$on("resultForm", (result) => {
       this.logging(result);
       // EventBus.$emit("openToast", true);
+      this.pageIndex = 1;
+      this.pageSize = 12;
+      this.keyword = "";
+      this.departmentId = "";
+      this.positionId = "";
       this.filterEmployees(
         this.pageIndex,
         this.pageSize,
@@ -364,10 +369,15 @@ export default {
         let result = await axios.get(
           Common.APIURL +
             `employees/paging?keyword=${keyword}&positionId=${positionId}&departmentId=${departmentId}&pageIndex=${
-              (pageIndex-1) * pageSize
+              (pageIndex - 1) * pageSize
             }&pageSize=${pageSize}`
         );
-        this.employees = result.data;
+        if (result.data.Data != null) {
+          this.employees = result.data.Data;
+        }
+        else{
+          this.employees = [];
+        }
       } catch (error) {
         console.log("filterEmployees\n" + error);
       }

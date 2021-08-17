@@ -15,14 +15,14 @@ namespace MISA.CukCuk.Api.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    public class EmployeesController : ControllerBase
+    public class EmployeesController : BaseController<Employee>
     {
         #region Declare
         private readonly IEmployeeService _employeeService;
         #endregion
 
         #region Constructor
-        public EmployeesController(IEmployeeService employeeService)
+        public EmployeesController(IEmployeeService employeeService, IBaseService<Employee> baseService) : base(baseService)
         {
             this._employeeService = employeeService;
         }
@@ -51,12 +51,12 @@ namespace MISA.CukCuk.Api.Controllers
         /// </summary>
         /// <returns></returns>
         /// CreatedBy : LP(12/8)
-        [HttpGet]
-        public IActionResult GetAll()
-        {
-            var employees = _employeeService.GetAll();
-            return Ok(employees);
-        }
+        //[HttpGet]
+        //public IActionResult GetAll()
+        //{
+        //    var employees = _employeeService.GetAll();
+        //    return Ok(employees);
+        //}
 
         /// <summary>
         /// Lấy nhân viên theo id
@@ -64,12 +64,12 @@ namespace MISA.CukCuk.Api.Controllers
         /// <param name="id">Id nhân viên</param>
         /// <returns></returns>
         /// CreatedBy : LP(12/8)
-        [HttpGet("{id}")]
-        public IActionResult GetById(Guid id)
-        {
-            var employee = _employeeService.GetById(id);
-            return Ok(employee);
-        }
+        //[HttpGet("{id}")]
+        //public IActionResult GetById(Guid id)
+        //{
+        //    var employee = _employeeService.GetById(id);
+        //    return Ok(employee);
+        //}
 
 
         /// <summary>
@@ -78,12 +78,12 @@ namespace MISA.CukCuk.Api.Controllers
         /// <param name="employee">Thông tin nhân vien</param>
         /// <returns></returns>
         /// CreatedBy : LP(12/8)
-        [HttpPost]
-        public IActionResult Insert([FromBody] Employee employee)
-        {
-            var rowEffects = _employeeService.Insert(employee);
-            return Ok(rowEffects);
-        }
+        //[HttpPost]
+        //public IActionResult Insert([FromBody] Employee employee)
+        //{
+        //    var rowEffects = _employeeService.Insert(employee);
+        //    return Ok(rowEffects);
+        //}
 
         /// <summary>
         /// Cập nhật một nhân viên theo id
@@ -92,12 +92,12 @@ namespace MISA.CukCuk.Api.Controllers
         /// <param name="employee">Thông tin cập nhật nhân viên</param>
         /// <returns></returns>
         /// CreatedBy : LP(12/8)
-        [HttpPut("{id}")]
-        public IActionResult Update(Guid id, [FromBody] Employee employee)
-        {
-            ServiceResult serviceResult = _employeeService.Update(id, employee);
-            return Ok(serviceResult);
-        }
+        //[HttpPut("{id}")]
+        //public IActionResult Update(Guid id, [FromBody] Employee employee)
+        //{
+        //    ServiceResult serviceResult = _employeeService.Update(id, employee);
+        //    return Ok(serviceResult);
+        //}
 
         /// <summary>
         /// Xóa một nhân viên theo id
@@ -105,12 +105,12 @@ namespace MISA.CukCuk.Api.Controllers
         /// <param name="id">Id nhân viên</param>
         /// <returns></returns>
         /// CreatedBy LP(12/8)
-        [HttpDelete("{id}")]
-        public IActionResult Delete(Guid id)
-        {
-            ServiceResult serviceResult = _employeeService.Delete(id);
-            return Ok(serviceResult);
-        }
+        //[HttpDelete("{id}")]
+        //public IActionResult Delete(Guid id)
+        //{
+        //    ServiceResult serviceResult = _employeeService.Delete(id);
+        //    return Ok(serviceResult);
+        //}
 
         /// <summary>
         /// Tạo mã nhân viên mưới
@@ -132,13 +132,13 @@ namespace MISA.CukCuk.Api.Controllers
         /// <param name="value">Giá trị cootj</param>
         /// <returns></returns>
         /// CreatedBy : LP(12/8)
-        [HttpGet]
-        [Route("Property")]
-        public IActionResult GetEmployeeByProperty(string name, string value)
-        {
-            ServiceResult serviceResult = _employeeService.GetEmployeeByProperty(name, value);
-            return Ok(serviceResult);
-        }
+        //[HttpGet]
+        //[Route("Property")]
+        //public IActionResult GetEmployeeByProperty(string name, string value)
+        //{
+        //    ServiceResult serviceResult = _employeeService.GetEmployeeByProperty(name, value);
+        //    return Ok(serviceResult);
+        //}
 
     }
 
