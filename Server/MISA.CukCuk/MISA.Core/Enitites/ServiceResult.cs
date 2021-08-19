@@ -37,6 +37,7 @@ namespace MISA.Core.Enitites
         /// Dữ liệu trả về
         /// </summary>
         public object Data { get; set; }
+
         #endregion
 
         #region Constructor

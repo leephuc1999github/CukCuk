@@ -63,7 +63,6 @@ namespace MISA.Core.Enitites
         /// <summary>
         /// Ngày cấp
         /// </summary>
-        [Required]
         public DateTime? IdentityDate { get; set; }
 
         /// <summary>
@@ -76,6 +75,7 @@ namespace MISA.Core.Enitites
         /// </summary>
         [Required]
         [Duplication]
+
         public string PhoneNumber { get; set; }
 
         /// <summary>
@@ -147,6 +147,9 @@ namespace MISA.Core.Enitites
         /// 
         /// </summary>
         public string PersonalTaxCode { get; set; }
+
+        [NotMapped]
+        public string GenderName { get; set; }
         #endregion
 
 

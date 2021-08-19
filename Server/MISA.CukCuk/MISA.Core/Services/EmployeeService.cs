@@ -103,7 +103,7 @@ namespace MISA.Core.Services
             try
             {
                 var employees = _employeeRepository.GetEmployeesPaging(keyword, posistionId, departmentId, pageIndex, pageSize);
-                if(employees.Count() > 0)
+                if(employees.Data.Count() > 0)
                 {
                     serviceResult.SetSuccess(serviceResult, employees);
                 }

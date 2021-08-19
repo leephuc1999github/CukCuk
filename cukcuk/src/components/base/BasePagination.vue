@@ -18,19 +18,29 @@
           class="number"
           v-for="index in numPages"
           :key="index"
-          v-bind:class="index == current ? 'active' : ''"
+          v-bind:class="
+            (current <= numPages && current == index) ||
+            (current > numPages && current - numPages + index == current)
+              ? 'active'
+              : ''
+          "
           @click="clickBtn(index)"
         >
-          <div class="number-text">{{ index }}</div>
+          <div class="number-text" v-if="current > numPages ? true : false">
+            {{ current - numPages + index }}
+          </div>
+          <div class="number-text" v-if="current <= numPages ? true : false">
+            {{ index }}
+          </div>
         </a>
       </div>
       <div
         class="next-page"
-        @click="clickBtn(current + 1 > numPages ? numPages : current + 1)"
+        @click="clickBtn(current + 1 > totalPages ? totalPages : current + 1)"
       >
         <img src="../../assets/icon/btn-next-page.svg" alt="" />
       </div>
-      <div class="go-to-end" @click="clickBtn(numPages)">
+      <div class="go-to-end" @click="clickBtn(totalPages)">
         <img src="../../assets/icon/btn-lastpage.svg" alt="" />
       </div>
     </div>
@@ -43,8 +53,6 @@
 </template>
 
 <script>
-import axios from "axios";
-import Common from "../../Common";
 import EventBus from "../../EventBus";
 export default {
   props: ["page", "size", "active"],
@@ -55,21 +63,24 @@ export default {
       start: 0,
       end: 0,
       current: 0,
+      totalPages: 0,
     };
   },
-  async created() {
-    await this.countRecord();
-    this.paging();
+  created() {
+    EventBus.$on("totalRecord", (value) => {
+      this.total = value;
+      this.paging();
+    });
   },
   methods: {
     clickBtn(index) {
       this.current = index;
-      if(this.current < this.numPages){
-          this.start = (this.current-1)*12+1;
-          this.end = this.start + this.size - 1;
-      }else{
-          this.start = (this.current-1)*12+1;
-          this.end = this.total;
+      if (this.current < this.numPages) {
+        this.start = (this.current - 1) * 12 + 1;
+        this.end = this.start + this.size - 1;
+      } else {
+        this.start = (this.current - 1) * 12 + 1;
+        this.end = this.total;
       }
       EventBus.$emit("pagination", this.current);
     },
@@ -80,29 +91,22 @@ export default {
      */
     paging() {
       if (this.total % this.size == 0) {
-        this.numPages = this.total / this.size;
+        this.totalPages = this.total / this.size;
       } else {
-        this.numPages = Math.floor(this.total / this.size) + 1;
+        this.totalPages = Math.floor(this.total / this.size) + 1;
+      }
+      if (this.totalPages > 2) {
+        this.numPages = 2;
+      } else {
+        this.numPages = this.totalPages;
       }
       this.current = this.active;
-      this.start = this.current;
-      this.end = this.size;
-    },
-
-    /**
-     * Get all employee api
-     * Author : LP(7/8)
-     */
-    async countRecord() {
-      try {
-        let result = await axios.get(Common.APIURL+"employees");
-        if (Common.isNullOrUndifined(result.data.Data)) {
-          this.total = 0;
-        } else {
-          this.total = result.data.Data.length;
-        }
-      } catch (error) {
-        console.log("getAllEmployees\n" + error);
+      if (this.current < this.numPages) {
+        this.start = (this.current - 1) * 12 + 1;
+        this.end = this.start + this.size - 1;
+      } else {
+        this.start = (this.current - 1) * 12 + 1;
+        this.end = this.total;
       }
     },
   },

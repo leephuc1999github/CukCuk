@@ -66,6 +66,12 @@ namespace MISA.Core.Enitites
 
     }
 
+    [AttributeUsage(AttributeTargets.Property)]
+    public class NotMapped : Attribute
+    {
+
+    }
+
     /// <summary>
     /// Các properties chung
     /// </summary>

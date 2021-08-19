@@ -201,6 +201,7 @@ export default {
     // catch event searh box
     EventBus.$on("keyChange", (keyword) => {
       this.keyword = keyword;
+      this.pageIndex = 1;
       this.filterEmployees(
         this.pageIndex,
         this.pageSize,
@@ -220,7 +221,8 @@ export default {
           this.departmentId = selected.Value;
           break;
       }
-      if (selected.Type === "filter")
+      if (selected.Type === "filter") {
+        this.pageIndex = 1;
         this.filterEmployees(
           this.pageIndex,
           this.pageSize,
@@ -228,6 +230,7 @@ export default {
           this.departmentId,
           this.positionId
         );
+      }
     });
 
     // catch event result in form
@@ -373,11 +376,12 @@ export default {
             }&pageSize=${pageSize}`
         );
         if (result.data.Data != null) {
-          this.employees = result.data.Data;
-        }
-        else{
+          this.employees = result.data.Data.Data;
+        } else {
           this.employees = [];
         }
+
+        EventBus.$emit("totalRecord", result.data.Data.TotalRecord);
       } catch (error) {
         console.log("filterEmployees\n" + error);
       }

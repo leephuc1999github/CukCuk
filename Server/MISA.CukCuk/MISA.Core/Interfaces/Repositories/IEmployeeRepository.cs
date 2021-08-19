@@ -24,6 +24,7 @@ namespace MISA.Core.Interfaces.Repositories
         /// <param name="pageIndex"></param>
         /// <param name="pageSize"></param>
         /// <returns></returns>
-        public IEnumerable<Employee> GetEmployeesPaging(string keyword, string posistionId, string departmentId, int pageIndex, int pageSize);
+        public BaseEntityPaging<Employee> GetEmployeesPaging(string keyword, string posistionId, string departmentId, int pageIndex, int pageSize);
+
     }
 }

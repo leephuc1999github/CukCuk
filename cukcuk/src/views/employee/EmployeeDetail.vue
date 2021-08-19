@@ -150,7 +150,7 @@
                   <div class="col-item">
                     <div class="label-input">
                       <p class="label">
-                        Ngày cấp(<span style="color: red">*</span>)
+                        Ngày cấp
                       </p>
                       <date-picker
                         id="identity-date"
@@ -159,9 +159,6 @@
                         :format="'DD/MM/YYYY'"
                         :value-type="'YYYY-MM-DD'"
                       ></date-picker>
-                      <!-- <div class="msg" ref="identitydate-msg-required">
-                        Ngày cấp không được để trống
-                      </div> -->
                     </div>
                   </div>
                 </div>
@@ -488,7 +485,6 @@ export default {
           this.validateInputRequired("Email", "email");
           this.validateInputRequired("PhoneNumber", "phone");
           this.validateInputRequired("IdentityNumber", "identitynumber");
-          this.validateInputRequired("IdentityDate", "identitydate");
         }
       }
     },
@@ -505,14 +501,12 @@ export default {
         Common.isNullOrUndifined(this.employee.Email) ||
         Common.isNullOrUndifined(this.employee.PhoneNumber) ||
         Common.isNullOrUndifined(this.employee.IdentityNumber)
-        // Common.isNullOrUndifined(this.employee.IdentityDate)
       ) {
         this.validateInputRequired("EmployeeCode", "code");
         this.validateInputRequired("FullName", "fullname");
         this.validateInputRequired("Email", "email");
         this.validateInputRequired("PhoneNumber", "phone");
         this.validateInputRequired("IdentityNumber", "identitynumber");
-        // this.validateInputRequired("IdentityDate", "identitydate");
         this.$toast.info("Bạn cần nhập đẩy đủ thông tin yêu cầu");
       } else {
         if (this.method === "POST") {

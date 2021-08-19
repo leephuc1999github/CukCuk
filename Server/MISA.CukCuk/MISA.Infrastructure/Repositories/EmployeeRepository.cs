@@ -30,8 +30,10 @@ namespace MISA.Infrastructure.Repositories
         /// <param name="pageIndex"></param>
         /// <param name="pageSize"></param>
         /// <returns></returns>
-        public IEnumerable<Employee> GetEmployeesPaging(string keyword, string posistionId, string departmentId, int pageIndex, int pageSize)
+        public BaseEntityPaging<Employee> GetEmployeesPaging(string keyword, string posistionId, string departmentId, int pageIndex, int pageSize)
         {
+            BaseEntityPaging<Employee> result = new BaseEntityPaging<Employee>();
+
             string sqlCommand = "Proc_GetEmployeesPaging";
             DynamicParameters parameters = new DynamicParameters();
             parameters.Add("@Keyword", keyword);
@@ -40,7 +42,21 @@ namespace MISA.Infrastructure.Repositories
             parameters.Add("@PageIndex", pageIndex);
             parameters.Add("@PageSize", pageSize);
             var employees = _dbConnection.Query<Employee>(sqlCommand, param: parameters, commandType: CommandType.StoredProcedure);
-            return employees;
+
+
+            string sqlCommand1 = "Proc_TotalRecordEmployeesFilter";
+            DynamicParameters parameters1 = new DynamicParameters();
+            parameters1.Add("@Keyword", keyword);
+            parameters1.Add("@PositionId", posistionId);
+            parameters1.Add("@DepartmentId", departmentId);
+            result.TotalRecord = _dbConnection.QueryFirstOrDefault<int>(sqlCommand1, param: parameters1, commandType: CommandType.StoredProcedure);
+
+
+            result.Data = employees;
+            result.PageIndex = pageIndex;
+            result.PageSize = pageSize;
+            
+            return result;
         }
 
         /// <summary>
