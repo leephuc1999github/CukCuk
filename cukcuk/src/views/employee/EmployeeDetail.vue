@@ -726,16 +726,7 @@ export default {
   display: none;
   font-size: 12px;
 }
-.msg::before {
-  content: "";
-  height: 5px;
-  width: 5px;
-  background: #f65454;
-  border-radius: 50%;
-  display: inline-block;
-  margin-right: 8px !important;
-  margin-bottom: 2px;
-}
+
 #dob,
 #join-date,
 #identity-date {

@@ -19,6 +19,7 @@ namespace MISA.Core.Enitites
         /// <summary>
         /// Khóa chính
         /// </summary>
+        [Key]
         public Guid EmployeeId { get; set; }
 
         /// <summary>

@@ -16,31 +16,23 @@
       <div class="number-page">
         <a
           class="number"
-          v-for="index in numPages"
-          :key="index"
-          v-bind:class="
-            (current <= numPages && current == index) ||
-            (current > numPages && current - numPages + index == current)
-              ? 'active'
-              : ''
-          "
-          @click="clickBtn(index)"
+          v-for="page in textPages"
+          :key="page.Value"
+          @click="clickBtn(page.Value)"
+          v-bind:class="current == page.Value ? 'active' : ''"
         >
-          <div class="number-text" v-if="current > numPages ? true : false">
-            {{ current - numPages + index }}
-          </div>
-          <div class="number-text" v-if="current <= numPages ? true : false">
-            {{ index }}
+          <div class="number-text">
+            {{ page.Text }}
           </div>
         </a>
       </div>
       <div
         class="next-page"
-        @click="clickBtn(current + 1 > totalPages ? totalPages : current + 1)"
+        @click="clickBtn(current + 1 > allPages ? allPages : current + 1)"
       >
         <img src="../../assets/icon/btn-next-page.svg" alt="" />
       </div>
-      <div class="go-to-end" @click="clickBtn(totalPages)">
+      <div class="go-to-end" @click="clickBtn(allPages)">
         <img src="../../assets/icon/btn-lastpage.svg" alt="" />
       </div>
     </div>
@@ -59,11 +51,13 @@ export default {
   data() {
     return {
       total: 0,
-      numPages: 0,
+      numPages: 5,
       start: 0,
       end: 0,
-      current: 0,
-      totalPages: 0,
+      current: 1,
+      totalPages: [],
+      textPages: [],
+      allPages: 0,
     };
   },
   created() {
@@ -75,11 +69,10 @@ export default {
   methods: {
     clickBtn(index) {
       this.current = index;
+      this.start = (this.current - 1) * this.size + 1;
       if (this.current < this.numPages) {
-        this.start = (this.current - 1) * 12 + 1;
         this.end = this.start + this.size - 1;
       } else {
-        this.start = (this.current - 1) * 12 + 1;
         this.end = this.total;
       }
       EventBus.$emit("pagination", this.current);
@@ -90,24 +83,37 @@ export default {
      * Author: LP(13/8)
      */
     paging() {
-      if (this.total % this.size == 0) {
-        this.totalPages = this.total / this.size;
-      } else {
-        this.totalPages = Math.floor(this.total / this.size) + 1;
+      this.allPages =
+        this.total % this.size == 0
+          ? this.total / this.size
+          : Math.floor(this.total / this.size) + 1;
+      this.textPages = [];
+      for (let i = 1; i <= this.allPages; i++) {
+        this.totalPages.push({ Text: i + "", Value: i });
       }
-      if (this.totalPages > 2) {
-        this.numPages = 2;
-      } else {
-        this.numPages = this.totalPages;
-      }
+
       this.current = this.active;
-      if (this.current < this.numPages) {
-        this.start = (this.current - 1) * 12 + 1;
-        this.end = this.start + this.size - 1;
+
+      if (this.current <= Math.round(this.numPages / 2)) {
+        this.textPages = this.totalPages.slice(0, this.allPages < this.numPages ? this.allPages : this.numPages);
+      } else if (
+        this.current > Math.round(this.numPages / 2) &&
+        this.current <= this.allPages - Math.floor(this.numPages / 2)
+      ) {
+        this.textPages = this.totalPages.slice(
+          this.current - 3,
+          this.current + 2
+        );
       } else {
-        this.start = (this.current - 1) * 12 + 1;
-        this.end = this.total;
+        this.textPages = this.totalPages.slice(
+          this.allPages - this.numPages,
+          this.allPages
+        );
       }
+
+      this.start = (this.current - 1) * this.size + 1;
+      this.end =
+        this.current < this.numPages ? this.start + this.size - 1 : this.total;
     },
   },
 };

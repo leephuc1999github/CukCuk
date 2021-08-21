@@ -165,7 +165,7 @@ export default {
   cursor: pointer;
   border-radius: 4px;
   background: #fff;
-  min-width: 200px;
+  min-width: 150px;
   border: 1px solid #bbbbbb;
 }
 .dropdown:focus {

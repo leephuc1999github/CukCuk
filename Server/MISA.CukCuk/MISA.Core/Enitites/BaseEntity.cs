@@ -6,6 +6,13 @@ using System.Threading.Tasks;
 
 namespace MISA.Core.Enitites
 {
+    [AttributeUsage(AttributeTargets.Property)]
+    public class Key : Attribute
+    {
+
+    }
+
+
     /// <summary>
     /// Cờ Required yêu cầu không để trống
     /// </summary>

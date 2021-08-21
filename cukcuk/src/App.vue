@@ -1,23 +1,23 @@
 <template>
   <div id="app">
     <Navbar></Navbar>
-    <Header></Header>
     <Content>
+      <Header></Header>
       <router-view></router-view>
     </Content>
   </div>
 </template>
 
 <script>
-import Header from './components/layout/TheHeader.vue'
+import Header from "./components/layout/TheHeader.vue";
 import Navbar from './components/layout/TheNavbar.vue'
 import Content from './components/layout/TheContent.vue'
 export default {
   name: 'App',
   components: {
-    Header,
     Navbar,
-    Content
+    Content,
+    Header
   }
 }
 </script>
@@ -25,4 +25,9 @@ export default {
 <style scoped>
 @import "./styles/main.css";
 @import "./styles/date-picker.css";
+#app{
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+}
 </style>

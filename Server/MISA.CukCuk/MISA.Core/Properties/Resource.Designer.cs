@@ -88,6 +88,24 @@ namespace MISA.Core.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Giá trị {0} đã tồn tại.
+        /// </summary>
+        internal static string Duplicate_Msg {
+            get {
+                return ResourceManager.GetString("Duplicate_Msg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Giá trị {0} không đúng định dạng.
+        /// </summary>
+        internal static string Email_Msg {
+            get {
+                return ResourceManager.GetString("Email_Msg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to GET.
         /// </summary>
         internal static string GET {
@@ -111,6 +129,15 @@ namespace MISA.Core.Properties {
         internal static string PUT {
             get {
                 return ResourceManager.GetString("PUT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Giá trị {0} không được để trống.
+        /// </summary>
+        internal static string Required_Msg {
+            get {
+                return ResourceManager.GetString("Required_Msg", resourceCulture);
             }
         }
         

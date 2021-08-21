@@ -95,7 +95,7 @@
         </tbody>
       </table>
     </div>
-    <div class="content-footer">
+    <div class="content-footer" style="margin-top: auto">
       <Pagination v-bind:active="pageIndex" v-bind:size="pageSize"></Pagination>
     </div>
     <EmployeeDetail></EmployeeDetail>
@@ -185,7 +185,8 @@ export default {
       positionId: "",
       departmentId: "",
       pageIndex: 1,
-      pageSize: 12,
+      pageSize: 15
+      ,
     };
   },
   created() {
@@ -238,7 +239,7 @@ export default {
       this.logging(result);
       // EventBus.$emit("openToast", true);
       this.pageIndex = 1;
-      this.pageSize = 12;
+      this.pageSize = 15;
       this.keyword = "";
       this.departmentId = "";
       this.positionId = "";
@@ -371,9 +372,7 @@ export default {
       try {
         let result = await axios.get(
           Common.APIURL +
-            `employees/paging?keyword=${keyword}&positionId=${positionId}&departmentId=${departmentId}&pageIndex=${
-              (pageIndex - 1) * pageSize
-            }&pageSize=${pageSize}`
+            `employees/paging?keyword=${keyword}&positionId=${positionId}&departmentId=${departmentId}&pageIndex=${pageIndex}&pageSize=${pageSize}`
         );
         if (result.data.Data != null) {
           this.employees = result.data.Data.Data;
@@ -441,7 +440,9 @@ td {
 .employee-list {
   margin: 0 16px;
   /* display: none; */
-  height: 100%;
+  height: calc(100vh - 48px);
+  display: flex;
+  flex-direction: column;
 }
 
 .title {

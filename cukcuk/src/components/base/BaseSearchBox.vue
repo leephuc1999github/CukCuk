@@ -58,7 +58,7 @@ export default {
 .search-box {
   border: 1px solid #bbbbbb;
   border-radius: 4px;
-  width: 250px;
+  width: 300px;
   background: #fff;
 }
 .search-box:focus-within {

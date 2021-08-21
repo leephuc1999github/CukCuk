@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MISA.Core.Enitites;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,6 +21,15 @@ namespace MISA.Core.Interfaces.Repositories
         /// <returns>Các bản ghi bị ảnh hưởng</returns>
         /// CreatedBy : LP(6/8)
         public IEnumerable<T> GetAll();
+
+        /// <summary>
+        /// Phân trang và tìm kiếm đối tượng
+        /// </summary>
+        /// <param name="keyword">Từ khóa tìm kiếm</param>
+        /// <param name="pageIndex">Thứ tự trang</param>
+        /// <param name="pageSize">Độ dài bản ghi trên một trang</param>
+        /// <returns></returns>
+        public BaseEntityPaging<T> GetPaging(string keyword, int pageIndex, int pageSize);
 
         /// <summary>
         /// Lấy một bản ghi
@@ -59,7 +69,15 @@ namespace MISA.Core.Interfaces.Repositories
         /// <param name="propertyValue"></param>
         /// <returns></returns>
         /// CreatedBy : LP(6/8)
-        public T GetByProperty(string propertyName, string propertyValue);
+        public IEnumerable<T> GetByProperty(string propertyName, string propertyValue);
+
+        /// <summary>
+        /// Kiểm tra trùng giá trị
+        /// </summary>
+        /// <param name="name">Tên cột</param>
+        /// <param name="value">Giá trị cột</param>
+        /// <returns></returns>
+        public bool IsDuplication(string name, string value, Guid id);
         #endregion
     }
 }

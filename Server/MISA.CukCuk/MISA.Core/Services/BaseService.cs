@@ -5,6 +5,7 @@ using MISA.Core.Interfaces.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -37,15 +38,24 @@ namespace MISA.Core.Services
             serviceResult.MoreInfo = Properties.Resource.DELETE;
             try
             {
-                int rowEffects = _baseRepository.Delete(id);
-                if(rowEffects > 0)
+                var entity = _baseRepository.GetById(id);
+                if (entity != null)
                 {
-                    serviceResult.SetSuccess(serviceResult, rowEffects);
+                    int rowEffects = _baseRepository.Delete(id);
+                    if (rowEffects > 0)
+                    {
+                        serviceResult.SetSuccess(serviceResult, rowEffects);
+                    }
+                    else
+                    {
+                        serviceResult.SetBadRequest(serviceResult);
+                        serviceResult.DevMessage.Add($"{id.ToString()} xóa không thành công");
+                    }
                 }
                 else
                 {
                     serviceResult.SetBadRequest(serviceResult);
-                    serviceResult.DevMessage.Add($"{id.ToString()} xóa không thành công");
+                    serviceResult.DevMessage.Add($"{id.ToString()} không tồn tại");
                 }
             }
             catch (Exception ex)
@@ -69,7 +79,7 @@ namespace MISA.Core.Services
             try
             {
                 var result = _baseRepository.GetAll();
-                if(result.Count() > 0)
+                if (result.Count() > 0)
                 {
                     serviceResult.SetSuccess(serviceResult, result);
                 }
@@ -77,7 +87,7 @@ namespace MISA.Core.Services
                 {
                     serviceResult.SetNoContent(serviceResult);
                 }
-                
+
             }
             catch (Exception ex)
             {
@@ -101,7 +111,7 @@ namespace MISA.Core.Services
             {
                 var result = _baseRepository.GetById(id);
 
-                if(result != null)
+                if (result != null)
                 {
                     serviceResult.SetSuccess(serviceResult, result);
                 }
@@ -128,14 +138,14 @@ namespace MISA.Core.Services
         /// CreatedBy : LP(12/8)
         public ServiceResult Insert(T entity)
         {
-            ServiceResult serviceResult = CheckValidate(entity);
+            ServiceResult serviceResult = this.CheckValidate(new Guid(), entity);
             serviceResult.MoreInfo = Properties.Resource.POST;
-            if(serviceResult.ResultCode == (int)EnumServiceResult.Success)
+            if (serviceResult.ResultCode == (int)EnumServiceResult.Success)
             {
                 try
                 {
                     int rowEffects = _baseRepository.Insert(entity);
-                    if(rowEffects > 0)
+                    if (rowEffects > 0)
                     {
                         serviceResult.SetSuccess(serviceResult, rowEffects);
                     }
@@ -149,7 +159,7 @@ namespace MISA.Core.Services
                     serviceResult.SetInternalServerError(serviceResult);
                     serviceResult.DevMessage.Add($"Exception {ex.Message}");
                 }
-                
+
             }
             return serviceResult;
         }
@@ -163,19 +173,30 @@ namespace MISA.Core.Services
         /// CreatedBy : LP(12/8)
         public ServiceResult Update(Guid id, T entity)
         {
-            ServiceResult serviceResult = new ServiceResult();
+            ServiceResult serviceResult = this.CheckValidate(id, entity);
             serviceResult.MoreInfo = Properties.Resource.PUT;
             try
             {
-                int rowEffects = _baseRepository.Update(id, entity);
-                if(rowEffects > 0)
+                var oldEntity = _baseRepository.GetById(id);
+                if (oldEntity != null)
                 {
-                    serviceResult.SetSuccess(serviceResult, rowEffects);
+                    // kiểm tra trường mã có trong csdl ?
+                    int rowEffects = _baseRepository.Update(id, entity);
+                    if (rowEffects > 0)
+                    {
+                        serviceResult.SetSuccess(serviceResult, rowEffects);
+                    }
+                    else
+                    {
+                        serviceResult.SetNoContent(serviceResult);
+                    }
                 }
                 else
                 {
                     serviceResult.SetNoContent(serviceResult);
+                    serviceResult.DevMessage.Add($"Lấy mã {id.ToString()} không thành công");
                 }
+
             }
             catch (Exception ex)
             {
@@ -194,37 +215,43 @@ namespace MISA.Core.Services
         /// <param name="entity">Thông tin đối tượng </param>
         /// <returns>Thông tin sau khi validate</returns>
         /// CreatedBy : LP(6/8)
-        private ServiceResult CheckValidate(T entity)
+        private ServiceResult CheckValidate(Guid id, T entity)
         {
             ServiceResult serviceResult = new ServiceResult();
             try
             {
-                foreach (var property in entity.GetType().GetProperties())
+                foreach (PropertyInfo property in entity.GetType().GetProperties())
                 {
-                    var name = property.Name;
-                    var value = property.GetValue(entity) == "" ? null : property.GetValue(entity);
-                    if (property.IsDefined(typeof(Required), false) && IsNull(value))
+                    // gán giá trị khóa
+                    if(IsKey(property))
+                    {
+                        property.SetValue(entity, id);
+                    }
+                    // kiểm tra thuộc tính required
+                    if (IsNull(property, entity))
                     {
                         serviceResult.ResultCode = (int)EnumServiceResult.BadRequest;
-                        serviceResult.DevMessage.Add($"Giá trị {name} không được để trống");
-                        serviceResult.UserMessage = $"Giá trị {name} không được để trống";
+                        serviceResult.DevMessage.Add(string.Format(Properties.Resource.Required_Msg, property.Name));
+                        serviceResult.UserMessage = string.Format(Properties.Resource.Required_Msg, property.Name);
                     }
-
-                    if(property.IsDefined(typeof(Duplication), false) && IsDuplication(name, (string)value))
+                    // kiểm tra giá trị  trùng
+                    if (property.IsDefined(typeof(Duplication), false))
                     {
-                        serviceResult.ResultCode = (int)EnumServiceResult.BadRequest;
-                        serviceResult.DevMessage.Add($"Giá trị {name} đã tồn tại");
-                        serviceResult.UserMessage = $"Giá trị {name} đã tồn tại";
-                    }
-
-                    if(property.IsDefined(typeof(Email), false))
-                    {
-                        if (IsNotEmail(value.ToString().Trim()))
-                        {
+                        string name = property.Name;
+                        var value = property.GetValue(entity);
+                        if (_baseRepository.IsDuplication(property.Name, (string)value, id)){
                             serviceResult.ResultCode = (int)EnumServiceResult.BadRequest;
-                            serviceResult.DevMessage.Add($"Giá trị {name} không đúng định dạng");
-                            serviceResult.UserMessage = $"Giá trị {name} không đúng định dạng";
+                            serviceResult.DevMessage.Add(string.Format(Properties.Resource.Duplicate_Msg, name));
+                            serviceResult.UserMessage = string.Format(Properties.Resource.Duplicate_Msg, name);
                         }
+                        
+                    }
+                    // kiểm tra email
+                    if(IsNotEmail(property, entity))
+                    {
+                        serviceResult.ResultCode = (int)EnumServiceResult.BadRequest;
+                        serviceResult.DevMessage.Add(string.Format(Properties.Resource.Email_Msg, property.Name));
+                        serviceResult.UserMessage = string.Format(Properties.Resource.Email_Msg, property.Name);
                     }
                 }
             }
@@ -234,16 +261,30 @@ namespace MISA.Core.Services
                 serviceResult.DevMessage.Add($"Exception {ex.Message}");
             }
             return serviceResult;
-        } 
+        }
+
+        /// <summary>
+        /// Thuộc tính là khóa
+        /// </summary>
+        /// <param name="property">Thuộc tính</param>
+        /// <returns></returns>
+        private bool IsKey(PropertyInfo property)
+        {
+            return property.IsDefined(typeof(Key), true);
+        }
 
         /// <summary>
         /// Kiểm tra giá trị null
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        private bool IsNull(object value)
+        private bool IsNull(PropertyInfo property, T entity)
         {
-            if (string.IsNullOrEmpty(Convert.ToString(value)) || value == null) return true;
+            var value = property.GetValue(entity);
+            if(property.IsDefined(typeof(Required), true))
+            {
+                if (string.IsNullOrEmpty(Convert.ToString(value)) || value == null) return true;
+            }
             return false;
         }
 
@@ -253,27 +294,30 @@ namespace MISA.Core.Services
         /// <param name="name"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        private bool IsDuplication(string name, string value)
-        {
-            var entityDuplicate = _baseRepository.GetByProperty(name, value);
-            if (entityDuplicate != null) return true;
-            return false;
-        }
+        //private bool IsDuplication(string name, string value)
+        //{
+        //    var entityDuplicate = _baseRepository.GetByProperty(name, value);
+        //    if (entityDuplicate != null) return true;
+        //    return false;
+        //}
 
         /// <summary>
         /// Kiểm tra định dạng email
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        private bool IsNotEmail(string email) 
+        private bool IsNotEmail(PropertyInfo property, T entity)
         {
-            string pattern = @"^((\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*)\s*[;,.]{0,1}\s*)+$";
-            Regex regex = new Regex(pattern);
+            var email = property.GetValue(entity);
+            if(property.IsDefined(typeof(Email), true))
+            {
+                string pattern = @"^((\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*)\s*[;,.]{0,1}\s*)+$";
+                Regex regex = new Regex(pattern);
 
-            if (regex.Matches(email).Count == 0)
-                return true;
+                if (regex.Matches((string)email).Count == 0)
+                    return true;
+            }
             return false;
-
         }
 
         /// <summary>
@@ -290,7 +334,7 @@ namespace MISA.Core.Services
             try
             {
                 var entity = _baseRepository.GetByProperty(name, value);
-                if(entity != null)
+                if (entity != null)
                 {
                     serviceResult.SetSuccess(serviceResult, entity);
                 }

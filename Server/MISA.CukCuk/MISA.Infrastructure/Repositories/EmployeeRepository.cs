@@ -21,6 +21,7 @@ namespace MISA.Infrastructure.Repositories
 
         }
 
+
         /// <summary>
         /// Phân trang nhân viên
         /// </summary>
@@ -30,34 +31,29 @@ namespace MISA.Infrastructure.Repositories
         /// <param name="pageIndex"></param>
         /// <param name="pageSize"></param>
         /// <returns></returns>
-        public BaseEntityPaging<Employee> GetEmployeesPaging(string keyword, string posistionId, string departmentId, int pageIndex, int pageSize)
+        public BaseEntityPaging<Employee> GetEmployeesPaging(string keyword, string positionId, string departmentId, int pageIndex, int pageSize)
         {
             BaseEntityPaging<Employee> result = new BaseEntityPaging<Employee>();
 
             string sqlCommand = "Proc_GetEmployeesPaging";
             DynamicParameters parameters = new DynamicParameters();
             parameters.Add("@Keyword", keyword);
-            parameters.Add("@PositionId", posistionId);
+            parameters.Add("@PositionId", positionId);
             parameters.Add("@DepartmentId", departmentId);
             parameters.Add("@PageIndex", pageIndex);
             parameters.Add("@PageSize", pageSize);
+            parameters.Add("@TotalRecord", dbType: DbType.Int32, direction: ParameterDirection.Output);
             var employees = _dbConnection.Query<Employee>(sqlCommand, param: parameters, commandType: CommandType.StoredProcedure);
-
-
-            string sqlCommand1 = "Proc_TotalRecordEmployeesFilter";
-            DynamicParameters parameters1 = new DynamicParameters();
-            parameters1.Add("@Keyword", keyword);
-            parameters1.Add("@PositionId", posistionId);
-            parameters1.Add("@DepartmentId", departmentId);
-            result.TotalRecord = _dbConnection.QueryFirstOrDefault<int>(sqlCommand1, param: parameters1, commandType: CommandType.StoredProcedure);
+            result.TotalRecord = parameters.Get<int>("TotalRecord");
 
 
             result.Data = employees;
             result.PageIndex = pageIndex;
             result.PageSize = pageSize;
-            
+
             return result;
         }
+
 
         /// <summary>
         /// Lấy mã nhân viên mới

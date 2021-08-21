@@ -65,17 +65,17 @@ namespace MISA.Core.Services
             serviceResult.MoreInfo = Properties.Resource.GET;
             try
             {
-                var entity = _baseRepository.GetByProperty(name, value);
-                serviceResult.SetSuccess(serviceResult, entity);
-                if (entity != null)
+                var entities = _baseRepository.GetByProperty(name, value);
+                serviceResult.SetSuccess(serviceResult, entities);
+                if (entities.Count() > 0)
                 {
-                    serviceResult.UserMessage = $"Giá trị {value} đã tồn tại";
-                    serviceResult.DevMessage.Add($"Giá trị {value} đã tồn tại");
+                    serviceResult.UserMessage = Properties.Resource.User_Success_Msg;
+                    serviceResult.DevMessage.Add(Properties.Resource.User_Success_Msg);
                 }
                 else
                 {
-                    serviceResult.UserMessage = $"Giá trị {value} chưa có trong csdl";
-                    serviceResult.DevMessage.Add($"Giá trị {value} chưa có trong csdl");
+                    serviceResult.UserMessage = Properties.Resource.User_Info_Msg;
+                    serviceResult.DevMessage.Add(Properties.Resource.Dev_Error_Msg);
                 }
                 
             }

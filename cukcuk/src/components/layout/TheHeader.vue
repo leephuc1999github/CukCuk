@@ -49,8 +49,6 @@ export default {
   height: 48px;
   background-color: #ffffff;
   border-bottom: 1px solid #e5e5e5;
-  width: calc(100% - 227px);
-  margin-left: 227px;
 }
 .header>.box {
   display: flex;

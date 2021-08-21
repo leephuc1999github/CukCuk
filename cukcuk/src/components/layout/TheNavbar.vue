@@ -59,7 +59,7 @@ export default {
   width: 226px;
   background-color: #ffffff;
   border-right: 1px solid #e5e5e5;
-  float: left;
+  /* float: left; */
 }
 
 .logo-site {
