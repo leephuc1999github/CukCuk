@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 using Dapper;
 using MISA.Core.Enitites;
 using MISA.Core.Interfaces.Repositories;
@@ -104,6 +105,44 @@ namespace MISA.Infrastructure.Repositories
                 }
             }
             return oldCode.Substring(0, brk) + changeValue;
+        }
+
+        /// <summary>
+        /// Xóa nhiều nhân viên
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <returns></returns>
+        public bool DeleteMultiEmployees(List<Guid> ids)
+        {
+            bool flag = true;
+            try
+            {
+                _dbConnection.Open();
+                using (var transaction = _dbConnection.BeginTransaction())
+                {
+                    // duyệt từng id
+                    foreach (var item in ids)
+                    {
+                        //xóa 
+                        
+                        string sqlCommand = $"DELETE FROM Employee WHERE EmployeeId = '{item.ToString()}'";
+                        int rowEffects = _dbConnection.Execute(sqlCommand, transaction: transaction, commandType: CommandType.Text);
+                        if (rowEffects == 0)
+                        {
+                            // xóa không thành công
+                            flag = false;
+                            transaction.Rollback();
+                            break;
+                        }
+                        transaction.Commit();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return flag;
         }
 
     }

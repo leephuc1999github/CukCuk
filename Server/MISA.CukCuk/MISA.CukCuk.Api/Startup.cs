@@ -45,6 +45,8 @@ namespace MISA.CukCuk.Api
             services.AddScoped<IPositionService, PositionService>();
             services.AddScoped<IEmployeeService, EmployeeService>();
 
+            services.AddScoped<ICustomerService, CustomerService>();
+            services.AddScoped<ICustomerRepository, CustomerRepository>();
 
             services.AddSwaggerGen(c =>
             {

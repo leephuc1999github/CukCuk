@@ -26,5 +26,11 @@ namespace MISA.Core.Interfaces.Repositories
         /// <returns></returns>
         public BaseEntityPaging<Employee> GetEmployeesPaging(string keyword, string posistionId, string departmentId, int pageIndex, int pageSize);
 
+        /// <summary>
+        /// Xóa nhiều nhân viên
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <returns></returns>
+        public bool DeleteMultiEmployees(List<Guid> ids);
     }
 }

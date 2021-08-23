@@ -33,3 +33,9 @@ E:\MYPROJECT\FrontEndApp\CukCuk\Server\MISA.CukCuk\MISA.CukCuk.Api\bin\Debug\net
 E:\MYPROJECT\FrontEndApp\CukCuk\Server\MISA.CukCuk\MISA.CukCuk.Api\bin\Debug\net5.0\MISA.Infrastructure.dll
 E:\MYPROJECT\FrontEndApp\CukCuk\Server\MISA.CukCuk\MISA.CukCuk.Api\bin\Debug\net5.0\MISA.Core.pdb
 E:\MYPROJECT\FrontEndApp\CukCuk\Server\MISA.CukCuk\MISA.CukCuk.Api\bin\Debug\net5.0\MISA.Infrastructure.pdb
+E:\MYPROJECT\FrontEndApp\CukCuk\Server\MISA.CukCuk\MISA.CukCuk.Api\bin\Debug\net5.0\EPPlus.dll
+E:\MYPROJECT\FrontEndApp\CukCuk\Server\MISA.CukCuk\MISA.CukCuk.Api\bin\Debug\net5.0\Microsoft.AspNetCore.Http.Features.dll
+E:\MYPROJECT\FrontEndApp\CukCuk\Server\MISA.CukCuk\MISA.CukCuk.Api\bin\Debug\net5.0\Microsoft.Extensions.Primitives.dll
+E:\MYPROJECT\FrontEndApp\CukCuk\Server\MISA.CukCuk\MISA.CukCuk.Api\bin\Debug\net5.0\Microsoft.IO.RecyclableMemoryStream.dll
+E:\MYPROJECT\FrontEndApp\CukCuk\Server\MISA.CukCuk\MISA.CukCuk.Api\bin\Debug\net5.0\System.IO.Pipelines.dll
+E:\MYPROJECT\FrontEndApp\CukCuk\Server\MISA.CukCuk\MISA.CukCuk.Api\bin\Debug\net5.0\System.Xml.XPath.XmlDocument.dll

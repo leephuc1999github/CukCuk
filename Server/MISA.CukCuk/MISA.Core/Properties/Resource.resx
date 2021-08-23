@@ -132,6 +132,12 @@
   <data name="Email_Msg" xml:space="preserve">
     <value>Giá trị {0} không đúng định dạng</value>
   </data>
+  <data name="Emty_Msg" xml:space="preserve">
+    <value>File trống </value>
+  </data>
+  <data name="Format_Error_Msg" xml:space="preserve">
+    <value>Dữ liệu không đúng định dạng</value>
+  </data>
   <data name="GET" xml:space="preserve">
     <value>GET</value>
   </data>
@@ -143,6 +149,9 @@
   </data>
   <data name="Required_Msg" xml:space="preserve">
     <value>Giá trị {0} không được để trống</value>
+  </data>
+  <data name="User_Empty_Msg" xml:space="preserve">
+    <value>Dữ liệu rỗng vui lòng kiểm tra lại</value>
   </data>
   <data name="User_Error_Msg" xml:space="preserve">
     <value>Có lỗi xảy ra vui lòng liên hệ MISA !</value>

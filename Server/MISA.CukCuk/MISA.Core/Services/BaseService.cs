@@ -215,7 +215,7 @@ namespace MISA.Core.Services
         /// <param name="entity">Thông tin đối tượng </param>
         /// <returns>Thông tin sau khi validate</returns>
         /// CreatedBy : LP(6/8)
-        private ServiceResult CheckValidate(Guid id, T entity)
+        public ServiceResult CheckValidate(Guid id, T entity)
         {
             ServiceResult serviceResult = new ServiceResult();
             try

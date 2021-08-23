@@ -37,5 +37,12 @@ namespace MISA.Core.Interfaces.Services
         /// <param name="pageSize"></param>
         /// <returns></returns>
         public ServiceResult GetEmployeesPaging(string keyword, string posistionId, string departmentId, int pageIndex, int pageSize);
+
+        /// <summary>
+        /// Xóa nhiều nhân viên
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <returns></returns>
+        public ServiceResult DeleteEmployees(string ids);
     }
 }

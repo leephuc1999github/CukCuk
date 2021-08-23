@@ -119,6 +119,55 @@ namespace MISA.Core.Services
             }
             return serviceResult;
         }
+
+        /// <summary>
+        /// Xóa nhiều nhân viên
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <returns></returns>
+        public ServiceResult DeleteEmployees(string ids)
+        {
+            ServiceResult resultService = new ServiceResult();
+            try
+            {
+                string[] parts = ids.Split(",");
+                List<Guid> keys = new List<Guid>();
+                bool flag = true;
+                for (int i = 0; i < parts.Length; i++)
+                {
+                    Guid temp = new Guid();
+                    if(Guid.TryParse(parts[i], out temp))
+                    {
+                        keys.Add(temp);
+                    }
+                    else
+                    {
+                        flag = false;
+                        break;
+                    }
+                }
+                if (flag)
+                {
+                    var result = _employeeRepository.DeleteMultiEmployees(keys);
+                    if (!result)
+                    {
+                        resultService.SetBadRequest(resultService);
+                        resultService.DevMessage.Add("EmployeeId sai hoặc không tồn tại");
+                    }
+                }
+                else
+                {
+                    resultService.SetBadRequest(resultService);
+                    resultService.DevMessage.Add("EmployeeId sai hoặc không tồn tại");
+                }
+            }
+            catch (Exception ex)
+            {
+                resultService.SetInternalServerError(resultService);
+                resultService.DevMessage.Add(ex.Message);
+            }
+            return resultService;
+        }
         #endregion
     }
 }

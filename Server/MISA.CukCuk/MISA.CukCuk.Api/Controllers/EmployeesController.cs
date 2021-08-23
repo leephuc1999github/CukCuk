@@ -47,6 +47,18 @@ namespace MISA.CukCuk.Api.Controllers
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <returns></returns>
+        [HttpDelete]
+        public IActionResult DeleteEmployes(string ids)
+        {
+            var result = _employeeService.DeleteEmployees(ids);
+            return Ok(result);
+        }
+
+        /// <summary>
         /// Lấy danh sách nhân viên
         /// </summary>
         /// <returns></returns>

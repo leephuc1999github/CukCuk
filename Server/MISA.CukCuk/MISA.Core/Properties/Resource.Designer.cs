@@ -106,6 +106,24 @@ namespace MISA.Core.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to File trống .
+        /// </summary>
+        internal static string Emty_Msg {
+            get {
+                return ResourceManager.GetString("Emty_Msg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dữ liệu không đúng định dạng.
+        /// </summary>
+        internal static string Format_Error_Msg {
+            get {
+                return ResourceManager.GetString("Format_Error_Msg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to GET.
         /// </summary>
         internal static string GET {
@@ -138,6 +156,15 @@ namespace MISA.Core.Properties {
         internal static string Required_Msg {
             get {
                 return ResourceManager.GetString("Required_Msg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dữ liệu rỗng vui lòng kiểm tra lại.
+        /// </summary>
+        internal static string User_Empty_Msg {
+            get {
+                return ResourceManager.GetString("User_Empty_Msg", resourceCulture);
             }
         }
         
