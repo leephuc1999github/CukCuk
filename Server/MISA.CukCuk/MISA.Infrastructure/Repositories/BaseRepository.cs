@@ -24,11 +24,7 @@ namespace MISA.Infrastructure.Repositories
         public BaseRepository()
         {
             _tableName = typeof(T).Name;
-            _connectString = "" +
-                "Host = 47.241.69.179;" +
-                "Database = MF948_LKPHUC_CukCuk;" +
-                "User Id = dev;" +
-                "Password = 12345678";
+            _connectString = "User Id = root; Host = localhost; Database = mf948_lkphuc_cukcuk; Character Set = utf8";
             _dbConnection = new MySqlConnection(_connectString);
 
         }

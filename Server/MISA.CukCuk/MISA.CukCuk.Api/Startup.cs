@@ -48,6 +48,25 @@ namespace MISA.CukCuk.Api
             services.AddScoped<ICustomerService, CustomerService>();
             services.AddScoped<ICustomerRepository, CustomerRepository>();
 
+            services.AddScoped<IInventoryItemRepository, InventoryItemRepository>();
+            services.AddScoped<IInventoryItemService, InventoryItemService>();
+            services.AddScoped<IPictureRepository, PictureRepository>();
+            services.AddScoped<IPictureService, PictureService>();
+
+            services.AddScoped<IInventoryItemServiceAdditionRepository, InventoryItemServiceAdditionRepository>();
+            services.AddScoped<IInventoryItemServiceAdditionService, InventoryItemServiceAdditionService>();
+
+            services.AddScoped<IInventoryItemGroupRepository, InventoryItemGroupRepository>();
+            services.AddScoped<IInventoryItemGroupService, InventoryItemGroupService>();
+
+
+            services.AddScoped<IUnitRepository, UnitRepository>();
+            services.AddScoped<IUnitService, UnitService>();
+
+            services.AddScoped<IServiceAdditionRepository, ServiceAdditionRepository>();
+            services.AddScoped<IServiceAdditionService, ServiceAdditionService>();
+
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "MISA.CukCuk.Api", Version = "v1" });
@@ -65,6 +84,8 @@ namespace MISA.CukCuk.Api
             }
 
             app.UseHttpsRedirection();
+
+            app.UseStaticFiles();
 
             app.UseRouting();
             app.UseCors(x => x

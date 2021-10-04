@@ -50,7 +50,7 @@ namespace MISA.CukCuk.Api.Controllers
         }
 
         [HttpPost]
-        public IActionResult Insert(T entity)
+        public virtual IActionResult Insert(T entity)
         {
             var resultService = _baseService.Insert(entity);
             return Ok(resultService);
@@ -71,7 +71,12 @@ namespace MISA.CukCuk.Api.Controllers
             return Ok(serviceResult);
         }
 
-
+        [HttpGet("Duplicate")]
+        public IActionResult CheckDuplicate(string columnName, string value, Guid id)
+        {
+            var serviceResult = this._baseService.CheckDuplicate(columnName, value, id);
+            return Ok(serviceResult);
+        }
         #endregion
     }
 }

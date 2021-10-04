@@ -134,8 +134,8 @@ namespace MISA.Infrastructure.Repositories
                             transaction.Rollback();
                             break;
                         }
-                        transaction.Commit();
                     }
+                    if(flag) transaction.Commit();
                 }
             }
             catch (Exception ex)

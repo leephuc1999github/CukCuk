@@ -39,3 +39,4 @@ E:\MYPROJECT\FrontEndApp\CukCuk\Server\MISA.CukCuk\MISA.CukCuk.Api\bin\Debug\net
 E:\MYPROJECT\FrontEndApp\CukCuk\Server\MISA.CukCuk\MISA.CukCuk.Api\bin\Debug\net5.0\Microsoft.IO.RecyclableMemoryStream.dll
 E:\MYPROJECT\FrontEndApp\CukCuk\Server\MISA.CukCuk\MISA.CukCuk.Api\bin\Debug\net5.0\System.IO.Pipelines.dll
 E:\MYPROJECT\FrontEndApp\CukCuk\Server\MISA.CukCuk\MISA.CukCuk.Api\bin\Debug\net5.0\System.Xml.XPath.XmlDocument.dll
+E:\MYPROJECT\FrontEndApp\CukCuk\Server\MISA.CukCuk\MISA.CukCuk.Api\bin\Debug\net5.0\Newtonsoft.Json.dll

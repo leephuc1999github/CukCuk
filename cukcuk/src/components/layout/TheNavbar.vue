@@ -25,18 +25,18 @@
         </div>
         <div class="nav-item-text">Mua hàng</div>
       </a>
-      <a href="/" class="nav-item active" tabindex="4">
+      <router-link to="/" class="nav-item active" tabindex="4">
         <div class="nav-item-icon">
           <i class="fa fa-male" aria-hidden="true"></i>
         </div>
         <div class="nav-item-text">Danh mục nhân viên</div>
-      </a>
-      <a href="#/customer" class="nav-item" tabindex="5">
+      </router-link>
+      <router-link to="/customer" class="nav-item" tabindex="5">
         <div class="nav-item-icon">
           <i class="fa fa-users" aria-hidden="true"></i>
         </div>
         <div class="nav-item-text">Danh mục khách hàng</div>
-      </a>
+      </router-link>
       <a href="/" class="nav-item" tabindex="6">
         <div class="nav-item-icon">
           <i class="fa fa-cogs" aria-hidden="true"></i>

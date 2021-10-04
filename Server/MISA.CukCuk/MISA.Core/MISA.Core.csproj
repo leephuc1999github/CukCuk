@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <None Remove="Enitites\BaseEntity.cs~RF8f84853.TMP" />
+    <None Remove="Enitites\InventoryItem.cs~RF4573b9.TMP" />
   </ItemGroup>
 
   <ItemGroup>

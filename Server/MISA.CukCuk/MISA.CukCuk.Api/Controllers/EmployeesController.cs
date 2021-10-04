@@ -52,7 +52,7 @@ namespace MISA.CukCuk.Api.Controllers
         /// <param name="ids"></param>
         /// <returns></returns>
         [HttpDelete]
-        public IActionResult DeleteEmployes(string ids)
+        public IActionResult DeleteEmployes([FromBody] string ids)
         {
             var result = _employeeService.DeleteEmployees(ids);
             return Ok(result);

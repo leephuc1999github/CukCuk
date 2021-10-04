@@ -206,8 +206,28 @@ namespace MISA.Core.Services
             return serviceResult;
         }
 
-
-
+        /// <summary>
+        /// DỊch vụ kiểm tra trùng
+        /// </summary>
+        /// <param name="columnName"></param>
+        /// <param name="value"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ServiceResult CheckDuplicate(string columnName, string value, Guid id)
+        {
+            ServiceResult serviceResult = new ServiceResult();
+            try
+            {
+                bool result = this._baseRepository.IsDuplication(columnName, value, id);
+                serviceResult.SetSuccess(serviceResult, result);
+            }
+            catch (Exception ex)
+            {
+                serviceResult.DevMessage.Add(ex.Message);
+                serviceResult.SetInternalServerError(serviceResult);
+            }
+            return serviceResult;
+        }
 
         /// <summary>
         /// Kiểm tra đầu vào dữ liệu 

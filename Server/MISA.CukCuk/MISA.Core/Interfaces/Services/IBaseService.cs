@@ -63,6 +63,15 @@ namespace MISA.Core.Interfaces.Services
        /// <returns></returns>
        /// CreatedBy : LP(6/8)
         public ServiceResult GetByNameAndValueProperty(string name, string value);
+
+        /// <summary>
+        /// Dịch vụ kiểm tra trùng
+        /// </summary>
+        /// <param name="columnName"></param>
+        /// <param name="value"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ServiceResult CheckDuplicate(string columnName, string value, Guid id);
         #endregion
     }
 }

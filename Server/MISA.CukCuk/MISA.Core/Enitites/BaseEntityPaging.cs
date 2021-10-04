@@ -14,6 +14,11 @@ namespace MISA.Core.Enitites
         public int TotalRecord { get; set; }
 
         /// <summary>
+        /// Số trang
+        /// </summary>
+        public int TotalPage { get; set; }
+
+        /// <summary>
         /// Thứ tự trang
         /// </summary>
         public int PageIndex { get; set; }
